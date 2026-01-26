@@ -24,4 +24,17 @@ function registerUser($name, $username, $password)
     return false;
 }
 
+function logUserIn($username, $password){
+    global $db;
+    $query = $db->prepare('SELECT * FROM tbl_users WHERE username = ? AND passwd = ?');
+    $query->bind_param('ss', $username, $password);
+    $query->execute();
+    $result = $query->get_result();
+
+    if ($result->num_rows) {
+        return $result->fetch_aobject();
+    }
+    return false;
+}
+
 ?>
