@@ -1,29 +1,34 @@
-     <?php
-     $username = '';
-     $usernameErr = ''; $passwordErr = '';
-     if (isset($_POST["username"], $_POST["password"])) {
+<?php
+$username = $password = '';
+$usernameErr = $passwordErr = '';
 
-     
-        $username = trim($_POST["username"]);
-        $password = trim($_POST["password"]);
-        if(empty($username)){
-            $usernameErr = 'please input your username !';
-        }
-        if(empty($password)){
-            $passwordErr = 'please input your password !';
-        }
-        if (empty($usernamerr) && empty($passwordErr))
+if (isset($_POST["username"], $_POST["password"])) {
 
-        }if(empty($usernameErr) && empty($passwordErr)) {
-            $user = logUserIn($username, $password);
-        }
-        if($user !== false) {
-            header('location: ./?page=dashboard');
-        }else{
-            echo '<div class="alert alert-danger" role="alert">
+    $username = trim($_POST["username"]);
+    $password = trim($_POST["password"]);
+
+    if (empty($username)) {
+        $usernameErr = 'please input your username !';
+    }
+
+    if (empty($password)) {
+        $passwordErr = 'please input your password !';
+    }
+
+    // Only attempt login if no errors
+    if (empty($usernameErr) && empty($passwordErr)) {
+        $user = logUserIn($username, $password);
+    }
+
+    if ($user) {
+        header('Location: ./?page=dashboard');
+        exit;
+    } else {
+        echo '<div class="alert alert-danger" role="alert">
             login fail !
-            </div>';
-        }
+        </div>';
+    }
+}
 
      
 
