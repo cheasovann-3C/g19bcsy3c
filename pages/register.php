@@ -1,38 +1,53 @@
 <?php
 $name = $username = $passwd = '';
-$usernameErr = $passwdErr = '';
+$nameErr = $usernameErr = $passwdErr = '';
 
-if (isset($_POST["name"], $_POST["username"], $_POST['passwd'], $_POST['confirmPasswd'])) {
-    $name = trim($_POST["name"]);
-    $username = trim($_POST["username"]);
-    $passwd = trim($_POST['passwd']);
-    $confirmPasswd = trim($_POST['confirmPasswd']);
+if (isset($_POST['name'], $_POST['username'], $_POST['passwd'], $_POST['confirmPasswd'])) {
+
+    $name           = trim($_POST['name']);
+    $username       = trim($_POST['username']);
+    $passwd         = trim($_POST['passwd']);
+    $confirmPasswd  = trim($_POST['confirmPasswd']);
+
     if (empty($name)) {
-        $nameErr = 'please input name !';
+        $nameErr = 'please input name!';
     }
+
     if (empty($username)) {
-        $usernameErr = 'please input your username !';
+        $usernameErr = 'please input username!';
     }
+
     if (empty($passwd)) {
-        $passwdErr = 'please input your password !';
+        $passwdErr = 'please input password!';
     }
+
     if ($passwd !== $confirmPasswd) {
-        $passwdErr = 'your password not match !';
+        $passwdErr = 'password not match!';
     }
-   if (UsernameExist($username)) {
-        $usernameErr = 'Username already exist.';
+
+    if (usernameExists($username)) {
+        $usernameErr = 'Username exists!';
     }
 
     if (empty($nameErr) && empty($usernameErr) && empty($passwdErr)) {
+
         if (registerUser($name, $username, $passwd)) {
             $name = $username = $passwd = '';
+
             echo '<div class="alert alert-success" role="alert">
-            You have successfully registered. go to <a href="./?page=login">LOGIN</a>
-            </div>';
+                    Registered. Go to <a href="./?page=login">Login</a>
+                  </div>';
+
+            // header('Location: ./?page=login');
+        } else {
+            echo '<div class="alert alert-danger" role="alert">
+                    Username exists or Service busy!
+                  </div>';
         }
     }
 }
 ?>
+
 <!-- form -->
 
 <section>

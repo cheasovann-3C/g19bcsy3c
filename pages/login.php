@@ -1,53 +1,49 @@
 <?php
-$username = $password = '';
-$usernameErr = $passwordErr = '';
+$username = '';
+$usernameErr = $passwdErr = '';
 
-if (isset($_POST["username"], $_POST["password"])) {
-
-    $username = trim($_POST["username"]);
-    $password = trim($_POST["password"]);
+if (isset($_POST['username'], $_POST['passwd'])) {
+    $username = trim($_POST['username']);
+    $passwd = trim($_POST['passwd']);
 
     if (empty($username)) {
-        $usernameErr = 'please input your username !';
+        $usernameErr = 'please input username!';
     }
 
-    if (empty($password)) {
-        $passwordErr = 'please input your password !';
+    if (empty($passwd)) {
+        $passwdErr = 'please input password!';
     }
 
-    // Only attempt login if no errors
-    if (empty($usernameErr) && empty($passwordErr)) {
-        $user = logUserIn($username, $password);
-    }
+    if (empty($usernameErr) && empty($passwdErr)) {
+        $user = logUserIn($username, $passwd);
 
-    if ($user) {
-        header('Location: ./?page=dashboard');
-        exit;
-    } else {
-        echo '<div class="alert alert-danger" role="alert">
-            login fail !
-        </div>';
+        if ($user !== false) {
+            $_SESSION['user_id'] = $user->id;
+            header('Location: ./?page=dashboard');
+        } else {
+            echo '<div class="alert alert-danger" role="alert">
+                    Login failed!
+                  </div>';
+        }
     }
 }
+?>
 
-     
+<form method="post" action="./?page=login" class="col-md-8 col-lg-6 mx-auto">
+    <h3>Login</h3>
 
-     ?>
-     
-     
-     <form method="post" action = "./?page=login"  class="mx-auto" style="max-width: 500px;">
-        <h3>Login</h3>
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input name="username" value="<?php echo $username ?>" type="text"
+            class="form-control <?php echo empty($usernameErr) ? '' : 'is-invalid' ?>">
+        <div class="invalid-feedback"><?php echo $usernameErr ?></div>
+    </div>
 
-        <div class="mb-3"> 
-            <label class= "form-label">Username</label>
-            <input name = "username"  value = "<?php echo $username; ?>" type="username" class="form-control
-            <?php echo empty($usernameErr) ? '' : 'is-invalid'; ?>">
-            <div class="invalid-feedback"><?php echo $usernameErr; ?></div>
-        </div>
-        <div class="mb-3">
-            <label class= "form-label">Password</label>
-            <input name = "password" type="password" class="form-control <?php echo empty($passwordErr) ? '' : 'is-invalid'; ?>">
-            <div class="invalid-feedback"><?php echo $passwordErr; ?></div>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input name="passwd" type="password" class="form-control <?php echo empty($passwdErr) ? '' : 'is-invalid' ?>">
+        <div class="invalid-feedback"><?php echo $passwdErr ?></div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
