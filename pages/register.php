@@ -4,10 +4,10 @@ $nameErr = $usernameErr = $passwdErr = '';
 
 if (isset($_POST['name'], $_POST['username'], $_POST['passwd'], $_POST['confirmPasswd'])) {
 
-    $name           = trim($_POST['name']);
-    $username       = trim($_POST['username']);
-    $passwd         = trim($_POST['passwd']);
-    $confirmPasswd  = trim($_POST['confirmPasswd']);
+    $name = trim($_POST['name']);
+    $username = trim($_POST['username']);
+    $passwd = trim($_POST['passwd']);
+    $confirmPasswd = trim($_POST['confirmPasswd']);
 
     if (empty($name)) {
         $nameErr = 'please input name!';
