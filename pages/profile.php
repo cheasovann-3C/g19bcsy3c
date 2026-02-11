@@ -1,14 +1,38 @@
 <?php
-$oldPasswd = $passwd = $confirmPasswd = '';
-$oldPasswdErr = $passwdErr = '';
+$oldPasswd = $newPasswd = $confirmNewPasswd = '';
+$oldPasswdErr = $newPasswdErr  = '';
 
-
+if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_POST['confirmNewPasswd'])) {
+    $oldPasswd = trim($_POST['oldPasswd']);
+    $newPasswd = trim($_POST['newPasswd']);
+    $confirmNewPasswd = trim($_POST['confirmNewPasswd']);
+    if (empty($oldPasswd)) {
+        $oldPasswdErr = 'please input your old password';
+    }
+    if (empty($newPasswd)) {
+        $newPasswdErr = 'please input your new password';
+    }
+    if ($newPasswd !== $confirmNewPasswd) {
+        $newPasswdErr = 'password does not match';
+    }
+     if (!isUserHasPassword($oldPasswd)) {
+        $oldPasswdErr = 'password is incorrect';
+    }
+    if (empty($oldPasswdErr) && empty($newPasswdErr)) {
+        if (setUserNewPassowrd($newPasswd)) {
+            header('Location: ./?page=logout');
+        } else {
+            echo '<div class="alert alert-danger" role="alert">
+                try aggain.
+                </div>';
+        }
+    }
+}
 ?>
-
 
 <div class="row">
     <div class="col-6">
-        <form method="post" action="./?page=profile">
+        <form method="post" action="./">
             <div class="d-flex justify-content-center">
                 <input name="photo" type="file" id="profileUpload" hidden>
                 <label role="button" for="profileUpload">
@@ -48,11 +72,4 @@ $oldPasswdErr = $passwdErr = '';
             <button type="submit" name="changePasswd" class="btn btn-primary">Change Password</button>
         </form>
     </div>
-</div>
-
-
-
-
-
-
 </div>

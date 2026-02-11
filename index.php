@@ -1,10 +1,10 @@
 <?php
 require_once './init/init.php';
-$user = loggedIn(); // line 3
+$user = loggedInUser(); // line 3
 include './includes/header.inc.php';
 include './includes/navbar.inc.php';
 $available_pages = ['login', 'register', 'logout', 'dashboard', 'profile'];
-$logged_in_pages = ['dashboard'];
+$logged_in_pages = ['dashboard', 'profile'];
 $non_logged_in_pages = ['login', 'register'];
 $page = '';
 if (isset($_GET['page'])) {
