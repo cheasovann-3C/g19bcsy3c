@@ -13,6 +13,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li> -->
+
+                <?php if ($isAdmin) { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo $baseUrl; ?>?page=user/list">User Management</a>
+                    </li>
+                <?php } ?>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
@@ -20,25 +27,25 @@
                     </a>
                     <ul class="dropdown-menu">
                         <?php if (empty($user)) { ?>
-                            <li><a class="dropdown-item" href="/g19bcsy3c/?page=login">Login</a></li>
+                            <li><a class="dropdown-item" href="<?php echo $baseUrl; ?>?page=login">Login</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="<?php echo $baseUrl; ?>?page=register">Register</a></li>
                         <?php } else { ?>
-                            <li><a class="dropdown-item" href="/g19bcsy3c/?page=profile">Profile</a></li>
+                            <li><a class="dropdown-item" href="<?php echo $baseUrl; ?>?page=profile">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/g19bcsy3c/?page=logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="<?php echo $baseUrl; ?>?page=logout">Logout</a></li>
                         <?php } ?>
-                        <!-- </ul>
+                    </ul>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul> -->
-                        <!-- <form class="d-flex" role="search">
+                </li> -->
+            </ul>
+            <!-- <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form> -->

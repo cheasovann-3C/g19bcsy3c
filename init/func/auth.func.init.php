@@ -88,3 +88,70 @@ function setUserNewPassowrd($passwd)
     return false;
 }
 
+// function isAdmin(){
+//     return loggedInUser()->is_admin == 1;
+// }
+function isAdmin(){
+    $user = loggedInUser();
+    return $user && $user-> level === 'admin';
+}
+
+// ---- functions added from teacher ----
+
+function changeProfileImage($image)
+{
+    global $db;
+    $user = loggedInUser();
+    $image_path = uploadImage($image);
+    if ($image_path && $user->photo) {
+        unlink($user->photo);
+    }
+    $query = $db->prepare('UPDATE tbl_users SET photo = ? WHERE id = ?');
+    $query->bind_param('sd', $image_path, $user->id);
+    $query->execute();
+    if ($db->affected_rows) {
+        return true;
+    }
+    return false;
+}
+
+function deleteProfileImage()
+{
+    global $db;
+    $user = loggedInUser();
+    if ($user->photo) {
+        unlink($user->photo);
+    }
+    $query = $db->prepare('UPDATE tbl_users SET photo = NULL WHERE id = ?');
+    $query->bind_param('d', $user->id);
+    $query->execute();
+    if ($db->affected_rows) {
+        return true;
+    }
+    return false;
+}
+
+function uploadImage($image)
+{
+    $img_name = $image['name'];
+    $img_size = $image['size'];
+    $tmp_name = $image['tmp_name'];
+    $error = $image['error'];
+    $dir = './assets/images/';
+    $allow_exs = ['jpg', 'png', 'jpeg'];
+    $image_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+    $image_lowercase_ex = strtolower($image_ex);
+    if (!in_array($image_lowercase_ex, $allow_exs)) {
+        throw new Exception('File extension is not allowed!');
+    }
+    if ($error !== 0) {
+        throw new Exception('Unknown error occurred!');
+    }
+    if ($img_size > 500000) {
+        throw new Exception('File size is too large!');
+    }
+    $new_image_name = uniqid("PI-") . '.' . $image_lowercase_ex;
+    $image_path = $dir . $new_image_name;
+    move_uploaded_file($tmp_name, $image_path);
+    return $image_path;
+}
