@@ -19,18 +19,22 @@ if (isset($_POST['name'], $_POST['username'], $_POST['passwd'], $_FILES['photo']
         $usernameErr = 'Username exists!';
     }
     if (empty($nameErr) && empty($usernameErr) && empty($passwdErr)) {
-        // if (registerUser($name, $username, $passwd)) {
-        //     $name = $username = $passwd = '';
-        //     echo '<div class="alert alert-success" role="alert">
-        //             Registered. Go to <a href="./?page=login">Login</a>
-        //             </div>';
-        //     // header('Location: ./?page=login');
-        // } else {
-        //     echo '<div class = "Alert alert-danger" role = "alert">
-        //     Username exists or Service busy
-        //     </div>';
-        // }
-
+         try {
+            if (createUser($name, $username, $passwd, $photo)) {
+                $name = $username = $passwd = '';
+                echo '<div class="alert alert-success" role="alert">
+                Create success.
+                </div>';
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                 Create failed!
+                </div>';
+            }
+        } catch (Exception $e) {
+            echo '<div class="alert alert-danger" role="alert">
+                 ' . $e->getMessage() . '
+                </div>';
+        }
     }
 }
 ?>
