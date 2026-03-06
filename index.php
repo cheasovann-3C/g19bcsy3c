@@ -1,7 +1,7 @@
 <?php
 require_once './init/init.php';
-$user = loggedInUser(); // line 3
-$isAdmin = isAdmin(); // line 5
+$user = loggedInUser();
+$isAdmin = isAdmin();
 include './includes/header.inc.php';
 include './includes/navbar.inc.php';
 $available_pages = ['login', 'register', 'logout', 'dashboard', 'profile', 'user/list', 'user/create'];
@@ -11,21 +11,18 @@ $admin_pages = ['user/list', 'user/create'];
 
 $page = '';
 if (isset($_GET['page'])) {
-    $page = $_GET['page']; // logout
+    $page = $_GET['page'];
 }
 if (in_array($page, $logged_in_pages) && empty($user)) {
     header('Location: ./?page=login');
 }
 if (in_array($page, $non_logged_in_pages) && !empty($user)) {
     header('Location: ./?page=dashboard');
-}                                           // ← properly closed
-if (in_array($page, $available_pages)) {
-    if(in_array($page, $admin_pages) && !$isAdmin) {  // ← inside available check
-        header('Location: ./?page=dashboard');
-    }
-    include './pages/' . $page . '.php';
 }
 if (in_array($page, $available_pages)) {
+    if (in_array($page, $admin_pages) && !$isAdmin) {
+        header('Location: ./?page=dashboard');
+    }
     include './pages/' . $page . '.php';
 } else {
     // header('Location: ./?page=dashboard');
